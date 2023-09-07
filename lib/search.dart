@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-      body: _searchController.text.isEmpty && _searchResults.isEmpty
+      body: _searchController.text.isEmpty || _searchResults.isEmpty
           ? Center(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
