@@ -1,21 +1,25 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_app/home.dart';
-import 'package:note_app/iconbtn.dart';
-import 'package:note_app/note.dart';
+import 'package:noota/hive_helper.dart';
+
+import 'home.dart';
+import 'iconbtn.dart';
+import 'note.dart';
 
 class AddNotePage extends StatefulWidget {
   final String title;
   final String subject;
   final String time;
 
-  AddNotePage({
+  const AddNotePage({
+    super.key,
     required this.title,
     required this.subject,
     required this.time,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _AddNotePageState createState() => _AddNotePageState();
 }
 
@@ -39,7 +43,8 @@ class _AddNotePageState extends State<AddNotePage> {
         leading: InkWell(
           onTap: () => Navigator.pop(context),
           child: Iconbtn(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white), size: 24),
+              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+              size: 24),
         ),
         actions: [
           InkWell(
@@ -53,11 +58,11 @@ class _AddNotePageState extends State<AddNotePage> {
                           left: MediaQuery.of(context).size.width * 0.2,
                           bottom: MediaQuery.of(context).size.height * 0.02),
                       actionsAlignment: MainAxisAlignment.center,
-                      backgroundColor: Color(0xff252525),
+                      backgroundColor: const Color(0xff252525),
                       title: Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).size.height * 0.02),
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             Icons.info,
                             color: Color(0xff606060),
@@ -65,7 +70,7 @@ class _AddNotePageState extends State<AddNotePage> {
                           ),
                         ),
                       ),
-                      content: Text(
+                      content: const Text(
                         'Saving note?',
                         style: TextStyle(
                           color: Color(0xffCFCFCF),
@@ -74,10 +79,10 @@ class _AddNotePageState extends State<AddNotePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xffFF0000))),
-                          child: Text(
+                          child: const Text(
                             'Discard',
                             style: TextStyle(
                               color: Colors.white,
@@ -91,25 +96,26 @@ class _AddNotePageState extends State<AddNotePage> {
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xff30BE71))),
-                          child: Text(
+                          child: const Text(
                             'Save',
                             style: TextStyle(
                               color: Colors.white,
                             ),
                           ),
-                          onPressed: () async {
-                            var box = Hive.box<Note>('note');
-                            await box.add(Note(
+                          onPressed: () {
+                            CrudHelper.add(Note(
                               title: _titleController.text,
                               subject: _subjectController.text,
                             ));
+
+                            // ignore: use_build_context_synchronously
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                                builder: (context) => const HomeScreen(),
                               ),
                             ); // pop the note page
                           },
@@ -123,18 +129,18 @@ class _AddNotePageState extends State<AddNotePage> {
                   SnackBar(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height * 0.5),
-                    duration: Duration(milliseconds: 2500),
+                    duration: const Duration(milliseconds: 2500),
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     content: Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       height: 90,
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'You can\'t leave any of both textfields empty!',
                           style: TextStyle(
@@ -148,8 +154,8 @@ class _AddNotePageState extends State<AddNotePage> {
                 );
               }
             },
-            child:
-                Iconbtn(icon: Icon(Icons.save, color: Colors.white), size: 24),
+            child: Iconbtn(
+                icon: const Icon(Icons.save, color: Colors.white), size: 24),
           ),
         ],
       ),
@@ -164,7 +170,7 @@ class _AddNotePageState extends State<AddNotePage> {
                   alignment: Alignment.centerRight,
                   child: Text(
                     widget.time,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w300),
                   ),
                 ),
@@ -178,11 +184,11 @@ class _AddNotePageState extends State<AddNotePage> {
                     }
                     return null;
                   },
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 34,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Title',
                     hintStyle: TextStyle(
                       color: Color(0xff9A9A9A),
@@ -200,8 +206,8 @@ class _AddNotePageState extends State<AddNotePage> {
                     }
                     return null;
                   },
-                  style: TextStyle(color: Colors.white, fontSize: 23),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white, fontSize: 23),
+                  decoration: const InputDecoration(
                     hintText: 'Type something...',
                     hintStyle:
                         TextStyle(color: Color(0xff9A9A9A), fontSize: 23),

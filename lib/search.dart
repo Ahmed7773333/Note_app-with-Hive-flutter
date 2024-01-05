@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_app/note.dart';
-import 'package:note_app/notePage.dart';
+
+import 'note.dart';
+import 'note_page.dart';
 
 class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _SearchPageState createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   List<Note> _searchResults = [];
 
   @override
@@ -29,13 +32,21 @@ class _SearchPageState extends State<SearchPage> {
       });
     } else {
       List<Note> notes = notesBox.values.toList();
-      setState(() {
-        _searchResults = notes
-            .where((note) =>
-                note.title.toLowerCase().contains(searchText.toLowerCase()) ||
-                note.subject.toLowerCase().contains(searchText.toLowerCase()))
-            .toList();
-      });
+      List<Note> results = notes
+          .where((note) =>
+              note.title.toLowerCase().contains(searchText.toLowerCase()) ||
+              note.subject.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+
+      if (results.isEmpty) {
+        setState(() {
+          _searchResults = [];
+        });
+      } else {
+        setState(() {
+          _searchResults = results;
+        });
+      }
     }
   }
 
@@ -45,26 +56,26 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Container(
-          margin:
-              EdgeInsets.only(top: 0.0, left: 10.0, right: 10.0), // Add padding
+          margin: const EdgeInsets.only(
+              top: 0.0, left: 10.0, right: 10.0), // Add padding
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30.0), // Make it circular
-            color: Color(0xff3B3B3B),
+            color: const Color(0xff3B3B3B),
           ),
           child: TextField(
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xffCCCCCC),
               fontSize: 20,
             ),
             controller: _searchController,
             decoration: InputDecoration(
               hintText: 'Search by the keyword...',
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 color: Color(0xffCCCCCC),
                 fontSize: 20,
               ),
               suffixIcon: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.clear,
                   color: Color(0xffCCCCCC),
                   size: 14,
@@ -75,8 +86,8 @@ class _SearchPageState extends State<SearchPage> {
                 },
               ),
               border: InputBorder.none, // Remove the underline
-              contentPadding:
-                  EdgeInsets.all(10.0), // Add padding inside the TextField
+              contentPadding: const EdgeInsets.all(
+                  10.0), // Add padding inside the TextField
             ),
           ),
         ),
@@ -86,13 +97,13 @@ class _SearchPageState extends State<SearchPage> {
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.5,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/search.png'),
                     fit: BoxFit.fill,
                   ),
                 ),
-                child: Align(
+                child: const Align(
                   alignment: Alignment.bottomCenter,
                   child: Text(
                     'File not found. Try searching again.',
@@ -111,7 +122,7 @@ class _SearchPageState extends State<SearchPage> {
                 return ListTile(
                   title: Text(
                     _searchResults[index].title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xffCCCCCC),
                       fontSize: 20,
                     ),
@@ -121,9 +132,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => NotePage(
-                          title: _searchResults[index].title,
-                          subject: _searchResults[index].subject,
-                          time: _searchResults[index].time!,
+                          note: _searchResults[index],
                           index: index,
                         ),
                       ),

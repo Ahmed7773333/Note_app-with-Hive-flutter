@@ -1,27 +1,23 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_app/home.dart';
-import 'package:note_app/iconbtn.dart';
-import 'package:note_app/note.dart';
+import 'package:noota/hive_helper.dart';
+import 'package:noota/home.dart';
 
-import 'addnotePage.dart';
+import 'iconbtn.dart';
+import 'note.dart';
 
 class NotePage extends StatefulWidget {
-  final String title;
-  final String subject;
-  final String time;
+  final Note note;
   final TextEditingController _titleController;
   final TextEditingController _subjectController;
   final int index;
 
   NotePage({
-    required this.title,
-    required this.subject,
-    required this.time,
+    super.key,
+    required this.note,
     required this.index,
-  })  : _titleController = TextEditingController(text: title),
-        _subjectController = TextEditingController(text: subject);
+  })  : _titleController = TextEditingController(text: note.title),
+        _subjectController = TextEditingController(text: note.subject);
 
   @override
   State<NotePage> createState() => _NotePageState();
@@ -37,7 +33,7 @@ class _NotePageState extends State<NotePage> {
         leading: InkWell(
           onTap: () => Navigator.pop(context),
           child: Iconbtn(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
             size: 24,
           ),
         ),
@@ -53,20 +49,20 @@ class _NotePageState extends State<NotePage> {
                           left: MediaQuery.of(context).size.width * 0.15,
                           bottom: MediaQuery.of(context).size.height * 0.02),
                       actionsAlignment: MainAxisAlignment.center,
-                      backgroundColor: Color(0xff252525),
+                      backgroundColor: const Color(0xff252525),
                       title: Center(
                         child: Padding(
                           padding: EdgeInsets.only(
                               bottom:
                                   MediaQuery.of(context).size.height * 0.02),
-                          child: Icon(
+                          child: const Icon(
                             Icons.info,
                             color: Color(0xff606060),
                             size: 36,
                           ),
                         ),
                       ),
-                      content: Text(
+                      content: const Text(
                         'Saving changes?',
                         style: TextStyle(
                           color: Color(0xffCFCFCF),
@@ -75,10 +71,10 @@ class _NotePageState extends State<NotePage> {
                       ),
                       actions: <Widget>[
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xffFF0000))),
-                          child: Text(
+                          child: const Text(
                             'Discard',
                             style: TextStyle(
                               color: Colors.white,
@@ -92,25 +88,26 @@ class _NotePageState extends State<NotePage> {
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
                         TextButton(
-                          style: ButtonStyle(
+                          style: const ButtonStyle(
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xff30BE71))),
-                          child: Text(
+                          child: const Text(
                             'Save',
                             style: TextStyle(
                               color: Colors.white,
                             ),
                           ),
                           onPressed: () async {
-                            var box = Hive.box<Note>('note');
-                            var note = box.getAt(widget.index);
-                            note!.title = widget._titleController.text;
-                            note.subject = widget._subjectController.text;
-                            await note.save();
+                            var keyy = widget.note.key;
+                            widget.note.title = widget._titleController.text;
+                            widget.note.subject =
+                                widget._subjectController.text;
+                            CrudHelper.update(keyy, widget.note);
+                            // ignore: use_build_context_synchronously
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
+                                builder: (context) => const HomeScreen(),
                               ),
                             );
                           },
@@ -124,18 +121,18 @@ class _NotePageState extends State<NotePage> {
                   SnackBar(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height * 0.5),
-                    duration: Duration(milliseconds: 2500),
+                    duration: const Duration(milliseconds: 2500),
                     behavior: SnackBarBehavior.floating,
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                     content: Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       height: 90,
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'You can\'t leave any of both textfields empty!',
                           style: TextStyle(
@@ -150,7 +147,7 @@ class _NotePageState extends State<NotePage> {
               }
             },
             child: Iconbtn(
-              icon: Icon(Icons.edit, color: Colors.white),
+              icon: const Icon(Icons.edit, color: Colors.white),
               size: 24,
             ),
           ),
@@ -166,8 +163,8 @@ class _NotePageState extends State<NotePage> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    widget.time,
-                    style: TextStyle(
+                    widget.note.time ?? '',
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.w300),
                   ),
                 ),
@@ -181,11 +178,11 @@ class _NotePageState extends State<NotePage> {
                     }
                     return null;
                   },
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 34,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Title',
                     hintStyle: TextStyle(
                       color: Color(0xff9A9A9A),
@@ -203,8 +200,8 @@ class _NotePageState extends State<NotePage> {
                     }
                     return null;
                   },
-                  style: TextStyle(color: Colors.white, fontSize: 23),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white, fontSize: 23),
+                  decoration: const InputDecoration(
                     hintText: 'Type something...',
                     hintStyle:
                         TextStyle(color: Color(0xff9A9A9A), fontSize: 23),

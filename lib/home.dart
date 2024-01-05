@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:note_app/iconbtn.dart';
-import 'package:note_app/note.dart';
+import 'package:noota/iconbtn.dart';
 
-import 'addnotePage.dart';
-import 'notePage.dart';
+import 'add_note_page.dart';
+import 'note.dart';
+import 'note_page.dart';
 import 'search.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -23,12 +25,12 @@ String mapToPattern(int n) {
 class _HomeScreenState extends State<HomeScreen> {
   bool visi = true;
   List<Color> colors = [
-    Color(0xffFD99FF),
-    Color(0xffFF9E9E),
-    Color(0xff91F48F),
-    Color(0xffFFF599),
-    Color(0xff9EFFFF),
-    Color(0xffB69CFF),
+    const Color(0xffFD99FF),
+    const Color(0xffFF9E9E),
+    const Color(0xff91F48F),
+    const Color(0xffFFF599),
+    const Color(0xff9EFFFF),
+    const Color(0xffB69CFF),
   ];
   String information =
       '''Home Screen: When you open the app, you'll see the home screen. This screen lists all your notes. If you haven't created any notes yet, you'll see a message encouraging you to create your first note.
@@ -54,7 +56,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
       _showDelete = true;
       _longPressedIndex = index;
     });
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
         setState(() {
           _showDelete = false;
@@ -71,7 +73,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
       appBar: AppBar(
         title: Row(
           children: [
-            Text(
+            const Text(
               'Notes',
               style: TextStyle(
                 color: Colors.white,
@@ -79,18 +81,18 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                 fontWeight: FontWeight.w400,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchPage(),
+                    builder: (context) => const SearchPage(),
                   ),
                 );
               },
               child: Iconbtn(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.search,
                     color: Colors.white,
                   ),
@@ -107,7 +109,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                             left: MediaQuery.of(context).size.width * 0.2,
                             bottom: MediaQuery.of(context).size.height * 0.02),
                         actionsAlignment: MainAxisAlignment.center,
-                        backgroundColor: Color(0xff252525),
+                        backgroundColor: const Color(0xff252525),
                         title: Padding(
                           padding: EdgeInsets.only(
                               bottom:
@@ -117,7 +119,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                               children: [
                                 Text(
                                   information,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,
                                   ),
@@ -128,10 +130,10 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                         ),
                         actions: <Widget>[
                           TextButton(
-                            style: ButtonStyle(
+                            style: const ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(
                                     Color(0xff30BE71))),
-                            child: Text(
+                            child: const Text(
                               'ok',
                               style: TextStyle(
                                 color: Colors.white,
@@ -148,7 +150,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                 );
               },
               child: Iconbtn(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.info_outline,
                     color: Colors.white,
                   ),
@@ -169,12 +171,12 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.9,
                       height: MediaQuery.of(context).size.height * 0.5,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage('assets/bg.png'),
                             fit: BoxFit.fill),
                       ),
-                      child: Align(
+                      child: const Align(
                         alignment: Alignment.bottomCenter,
                         child: Text(
                           'Create your first note !',
@@ -195,6 +197,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                         shrinkWrap: true,
                         itemCount: box.length,
                         itemBuilder: (context, index) {
+                          // ignore: non_constant_identifier_names
                           Note Notes = box.getAt(index);
                           return Padding(
                             padding: EdgeInsets.all(
@@ -205,9 +208,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => NotePage(
-                                      title: (box.getAt(index)).title,
-                                      subject: (box.getAt(index)).subject,
-                                      time: (box.getAt(index)).time,
+                                      note: box.getAt(index),
                                       index: index,
                                     ),
                                   ),
@@ -230,7 +231,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                                       child: ListTile(
                                         title: Text(
                                           Notes.title,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -244,41 +245,35 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                                                 _longPressedIndex == index
                                             ? 1.0
                                             : 0.0,
-                                        duration: Duration(seconds: 0),
+                                        duration: const Duration(seconds: 0),
                                         child: Container(
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Colors.red,
                                           ),
                                           child: Center(
                                             child: IconButton(
-                                              icon: Icon(
+                                              icon: const Icon(
                                                 Icons.delete,
                                                 color: Colors.white,
                                               ),
                                               onPressed: () {
-                                                if (_showDelete)
+                                                if (_showDelete) {
                                                   setState(() {
                                                     box.deleteAt(index);
                                                     _longPressedIndex = -1;
                                                   });
-                                                else
+                                                } else {
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           NotePage(
-                                                        title:
-                                                            (box.getAt(index))
-                                                                .title,
-                                                        subject:
-                                                            (box.getAt(index))
-                                                                .subject,
-                                                        time: (box.getAt(index))
-                                                            .time,
+                                                        note: box.getAt(index),
                                                         index: index,
                                                       ),
                                                     ),
                                                   );
+                                                }
                                               },
                                             ),
                                           ),
@@ -304,7 +299,7 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddNotePage(
+                    builder: (context) => const AddNotePage(
                       title: '',
                       subject: '',
                       time: '',
@@ -312,9 +307,9 @@ Remember, your notes are saved locally on your device and are not backed up anyw
                   ),
                 );
               },
-              backgroundColor: Color(0xff252525),
+              backgroundColor: const Color(0xff252525),
               elevation: 5.0, // This is the shadow
-              child: Icon(
+              child: const Icon(
                 Icons.add,
                 color: Colors.white,
                 size: 48,

@@ -1,4 +1,4 @@
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'note.g.dart';
 
@@ -21,7 +21,6 @@ class Note extends HiveObject {
   }) : timeOnclock = DateTime.now() {
     amOrPm = timeOnclock.hour < 12 ? 'AM' : 'PM';
     time =
-        '${(timeOnclock.month)}/${(timeOnclock.day)}/${(timeOnclock.year)}\n${(timeOnclock.hour)}:${(timeOnclock.minute)} ' +
-            amOrPm!;
+        '${(timeOnclock.month)}/${(timeOnclock.day)}/${(timeOnclock.year)}\n${(timeOnclock.hour)}:${(timeOnclock.minute)} ${amOrPm!}';
   }
 }
